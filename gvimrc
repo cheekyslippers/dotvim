@@ -61,7 +61,8 @@ endif
 "highlight Visual guibg=darkyellow
 
 "colorscheme desert
-colorscheme elflord
+"colorscheme elflord
+colorscheme afterglow
 
 
 "highlight Normal     ctermfg=White

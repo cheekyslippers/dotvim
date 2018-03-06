@@ -11,7 +11,7 @@
     syntax enable
   endif
 
-  colorscheme          elflord            " Choose a default color scheme
+  colorscheme          afterglow          " Choose a default color scheme
   behave xterm
 " }
 
