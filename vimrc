@@ -15,7 +15,10 @@
   behave xterm
 " }
 
-
+" Pathogen {
+    call pathogen#infect()
+    call pathogen#helptags()
+" }
 
 " Bundle {
 "
@@ -31,7 +34,6 @@
 
   " Installed bundles are listed here
 "  Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-"  Plugin 'scrooloose/nerdtree'
 "  Plugin 'klen/python-mode'
  
   filetype plugin indent on
@@ -71,10 +73,6 @@
 
 " DIFF options {
   set diffopt+=iwhite                      " ignore white spaces when diffing two files
-" }
-
-" NerdTree {
-  map <F2> :NERDTreeToggle<CR>
 " }
 
 
