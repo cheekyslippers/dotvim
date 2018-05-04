@@ -1,0 +1,19 @@
+[user]
+	name = paul.tiernan
+	email = paul.tiernan@imgtec.com
+[core]
+	editor = vim
+[merge]
+	tool = gvimdiff
+[color]
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+[alias]
+   lola = log --pretty=oneline --decorate --graph --abbrev-commit --date=local --branches
+   lna  = log --graph --pretty=format:'%Cred%h%Creset %C(green)(%cd) %C(bold blue)<%an> %C(magenta)%d%Creset %s %Creset' --abbrev-commit --graph --branches --date=iso
+   co   = checkout
+[git-p4]
+   user = paul.tiernan
+   retries = 0
