@@ -1,0 +1,214 @@
+#!/usr/bin/perl
+
+use strict;
+use Getopt::Long;
+
+#Intented to use system DU for a reasonable report on disk usage from the current
+#directory level down a programmable depth, and return the report in a
+#reasonable format
+
+my @raw_usage;
+my @sorted_entries;
+my @garray;
+my @marray;
+my @rarray;
+my @sorted_garray;
+my @sorted_marray;
+my @sorted_rarray;
+my @gigdirs;
+my @megdirs;
+my @remdirs;
+my @sorted_gigdirs;
+my @sorted_megdirs;
+my @sorted_remdirs;
+my %opts = (
+   dir       =>  "./",
+   depth     =>  2,
+   full      =>  0,
+   verbose   =>  0,
+   maxperdir =>  5
+);
+
+GetOptions ( \%opts,
+   'dir=s',
+   'depth=i',
+   'full',
+   'help' => \&usage,
+   'verbose',
+   'maxperdir'
+) or die ("Error in command line arguments\n");
+
+
+sub usage() {
+   print "\nUsage: diskrpt [opts]\n\n";
+   print "  -dir <path>   : path to check [default ./]\n";
+   print "  -depth <i>    : depth of hierarchy to traverse [default 2]\n";
+   print "  -full         : print full output [default no]\n";
+   print "  -help         : print this message\n";
+   print "  -verbose      : print script debug messages\n";
+   print "  -maxperdir    : max num of subdirs per dir in full report [default 5]\n";
+   exit(0);
+}
+
+sub call_du () {
+   print "Calling DU for $opts{dir} to depth $opts{depth}\n";
+   my $cmd = "du -h --max-depth $opts{depth} $opts{dir}";
+   my $list = `$cmd`;
+   @raw_usage = split("\n", $list);
+   if ($opts{verbose}) {
+      foreach my $entry (@raw_usage) {
+         printf "ENTRY : $entry\n";
+      }
+   }
+}
+
+sub sort_dir_reverse() {
+}
+
+sub parse_dir_arrays($) {
+   my $top = shift;
+   my $count = 0;
+   foreach my $ge (@sorted_gigdirs) {
+      (push @sorted_entries, $ge and ++$count) if ($ge =~ /$top\//i);
+      return if ($count >= $opts{maxperdir});
+   }
+   foreach my $me (@sorted_megdirs) {
+      (push @sorted_entries, $me and ++$count) if ($me =~ /$top\//i);
+      return if ($count >= $opts{maxperdir});
+   }
+   foreach my $re (@sorted_remdirs) {
+      (push @sorted_entries, $re and ++$count) if ($re =~ /$top\//i);
+      return if ($count >= $opts{maxperdir});
+   }
+}
+
+sub sort_reverse() {
+   @sorted_garray  = sort {$b <=> $a} @garray;
+   @sorted_marray  = sort {$b <=> $a} @marray;
+   @sorted_rarray  = sort {$b <=> $a} @rarray;
+   @sorted_gigdirs = sort {$b <=> $a} @gigdirs;
+   @sorted_megdirs = sort {$b <=> $a} @megdirs;
+   @sorted_remdirs = sort {$b <=> $a} @remdirs;
+}
+
+sub sort_array() {
+   print "Sorting array of results...\n";
+   my @toppaths;
+   (my $topentry = pop(@raw_usage)) =~ s/^([0-9\.]*)([A-Z])(.*)/\1 \2\3/;
+   push @sorted_entries, $topentry;
+   if ($opts{depth} > 1) {
+      foreach my $entry (@raw_usage) {
+         my @path = split(" ",$entry);
+         if ($path[1] !~ /(\.\/\S*)\//) {
+            push @toppaths, $entry;
+         } else {
+            if ($path[0] =~ /G/) {
+               $entry =~ s/^([0-9\.]*)G(.*)/\1 G\2/;
+               push @gigdirs, $entry;
+            } elsif ($path[0] =~ /M/) {
+               $entry =~ s/^([0-9\.]*)M(.*)/\1 M\2/;
+               push @megdirs, $entry;
+            } else {
+               $entry =~ s/^([0-9\.]*)K(.*)/\1 K\2/;
+               push @remdirs, $entry;
+            }
+         }
+      }
+      foreach my $path (@toppaths) {
+         if ($path =~ /^[0-9\.]*G/) {
+            $path =~ s/^([0-9\.]*)G(.*)/\1 G\2/;
+            push @garray, $path;
+         } elsif ($path =~ /^[0-9\.]*M/) {
+            $path =~ s/^([0-9\.]*)M(.*)/\1 M\2/;
+            push @marray, $path;
+         } else {
+            $path =~ s/^([0-9\.]*)K(.*)/\1 K\2/;
+            push @rarray, $path;
+         }
+      }
+      &sort_reverse();
+      foreach my $ga (@sorted_garray) {
+         push @sorted_entries, $ga;
+         my @path = split(" ",$ga);
+         &parse_dir_arrays($path[2]);
+      }
+      foreach my $ma (@sorted_marray) {
+         push @sorted_entries, $ma;
+         my @path = split(" ",$ma);
+         &parse_dir_arrays($path[2]);
+      }
+      foreach my $ra (@sorted_rarray) {
+         push @sorted_entries, $ra;
+         my @path = split(" ",$ra);
+         &parse_dir_arrays($path[2]);
+      }
+   } else {
+      foreach my $path (@raw_usage) {
+         if ($path eq "./") {
+            push @sorted_entries, $path;
+         } elsif ($path =~ /^[0-9\.]*G/) {
+            $path =~ s/^([0-9\.]*)G(.*)/\1 G\2/;
+            push @garray, $path;
+         } elsif ($path =~ /^[0-9\.]*M/) {
+            $path =~ s/^([0-9\.]*)M(.*)/\1 M\2/;
+            push @marray, $path;
+         } else {
+            $path =~ s/^([0-9\.]*)K(.*)/\1 K\2/;
+            push @rarray, $path;
+         }
+      }
+      &sort_reverse();
+      foreach my $ga (@sorted_garray) {
+         push @sorted_entries, $ga;
+      }
+      foreach my $ma (@sorted_marray) {
+         push @sorted_entries, $ma;
+      }
+      foreach my $ra (@sorted_rarray) {
+         push @sorted_entries, $ra;
+      }
+   }
+}
+
+
+sub print_disk_usage () {
+   print "==== RESULTS ====\n";
+   scalar @sorted_entries or die "ERROR: no entries found to sort\n";
+   print "\nLARGEST SUBDIRS:\n";
+   print "$sorted_entries[0]\n";
+   if (scalar @garray) {
+      foreach my $ga (@sorted_garray) {
+         print "$ga\n";
+      }
+   } elsif (scalar @marray) {
+      foreach my $ma (@sorted_marray) {
+         print "$ma\n";
+      }
+   } elsif (scalar @rarray) {
+      foreach my $ra (@sorted_rarray) {
+         print "$ra\n";
+      }
+   }
+
+   if ($opts{full}) {
+     print "\n==== FULL SORTED OUTPUT ====\n";
+     if (scalar @sorted_entries) {
+        foreach my $se (@sorted_entries) {
+           my @se_split = split(" ", $se);
+           print "\n" if ($se_split[2] !~ /\.\/\S*\/.*/);
+           print "$se\n";
+        }
+     }
+  }
+}
+
+
+##### MAIN ######
+printf "==== DISK USAGE SCRIPT ====\n";
+
+&call_du;
+&sort_array;
+&print_disk_usage;
+
+1;
+

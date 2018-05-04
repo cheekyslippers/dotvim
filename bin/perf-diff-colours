@@ -1,0 +1,41 @@
+#!/usr/bin/perl
+# encoding: UTF-8
+#
+# A simply `p4 diff` output colorizer.
+use strict;
+
+my $OUT_R = "^< ";
+my $IN_R = "^> ";
+
+## Escape sequences for colors
+## Misc
+my $RESET = "\e[0m";
+my $BOLD = "\e[1m";
+my $BLINK = "\e[5m";
+## Foreground colors
+my $BLACK = "\e[30m";
+my $RED = "\e[31m";
+my $GREEN = "\e[32m";
+my $BROWN = "\e[33m";
+my $BLUE = "\e[34m";
+my $MAGENTA = "\e[35m";
+my $CYAN = "\e[36m";
+my $WHITE = "\e[37m";
+my $ORANGE = "\033[38;5;208m";
+
+
+while (<STDIN>) {
+  my $line = $_;
+
+  if ($line =~ /^====\s+.*#\d+ - .*\s+====$/) {
+      print "$MAGENTA",$line,"$RESET";
+  } elsif ($line =~ /^\d+[a-z,0-9]+\d+.*/) {
+      print "$CYAN",$line,"$RESET";
+  } elsif ($line =~ $OUT_R) {
+      print "$RED",$line,"$RESET";
+  } elsif ($line =~ $IN_R) {
+      print "$WHITE",$line,"$RESET";
+  } else {
+      print $line;
+  }
+}

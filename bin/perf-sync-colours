@@ -1,0 +1,48 @@
+#!/usr/bin/perl
+# encoding: UTF-8
+#
+# A simply `p4 diff` output colorizer.
+use strict;
+
+## Escape sequences for colors
+## Misc
+my $RESET = "\e[0m";
+my $BOLD = "\e[1m";
+my $BLINK = "\e[5m";
+## Foreground colors
+my $BLACK = "\e[30m";
+my $RED = "\e[31m";
+my $GREEN = "\e[32m";
+my $BROWN = "\e[33m";
+my $BLUE = "\e[34m";
+my $MAGENTA = "\e[35m";
+my $CYAN = "\e[36m";
+my $WHITE = "\e[37m";
+my $ORANGE = "\033[38;5;208m";
+
+
+while (<STDIN>) {
+  my $line = $_;
+  chomp($line);
+  if ($line =~ /^\/\//) {
+      (my $depotbase = $line) =~ s/(^\/\/.*MAIN|DEV|REL\/).*#\d+ -.*/\1/;
+      (my $depot     = $line) =~ s/.*(MAIN|DEV|REL)(\/.*)#\d+ -.*/\2/;
+      (my $revid     = $line) =~ s/^\/\/.*(#\d+) -.*/\1/;
+      (my $cmd       = $line) =~ s/^\/\/.*#\d+ - (.*) \/user\/.*/\1/;
+      (my $localbase = $line) =~ s/.* - .* (\/user\/\w+\/\w+\/\w+)(.*$)/\1/;
+      (my $local     = $line) =~ s/^\/\/.*#\d+ - .* \/user\/\w+\/\w+\/\w+(\/.*$)/\1/;
+
+      my $newline = "${BOLD}${WHITE}${depotbase}${RESET}";
+      $newline .= "${WHITE}${depot}${RESET}";
+      $newline .= "${CYAN}${revid}${RESET}";
+      $newline .= " - ${cmd}";
+      $newline .= " ${BOLD}${ORANGE}${localbase}${RESET}";
+      $newline .= "${ORANGE}${local}${RESET}";
+      print $newline,"\n";
+  } elsif ($line =~ /^\.\.\./) {
+      print "${BOLD}${RED}${BLINK}${line}${RESET}\n";
+  } else {
+      print "${ORANGE}${line}${RESET}\n";
+  }
+
+}

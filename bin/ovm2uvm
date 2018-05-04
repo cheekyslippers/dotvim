@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+
+
+use strict;
+
+my @files = `grep -l ovm *`;
+
+foreach my $file (@files) {
+   chomp($file);
+   print "Converting $file\n";
+   system("p4 edit $file");
+   system("sed -i 's/ovm/uvm/g' $file");
+   print "Conversion of $file done\n";
+}
+
+
+

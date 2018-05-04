@@ -1,0 +1,121 @@
+#!/usr/bin/env python2.7
+
+import argparse
+import os
+import sys
+import subprocess
+import re
+import shutil
+
+def ArgParse(local_argv):
+   parser = argparse.ArgumentParser(description = 'Find all non-perforce files in current dir and sub-dirs - and optionally auto-delete them')
+   parser.add_argument('-f', "--force",
+                       action='store_true',
+                       dest='force',
+                       default=False,
+                       help="Force delete of all non-perfoce files")
+   args = parser.parse_args(local_argv)
+   return args
+
+def prune_empty_dirs():
+   print "\nPruning empty directories..."
+   fail = 0
+   for path,subdirs,files in os.walk(r'./',topdown=False):
+      for dir in subdirs:
+         if (path != "./"):
+            emptydir = path + "/" + dir
+         else:
+            emptydir = dir
+         if os.path.isdir(emptydir) and not os.listdir(emptydir):
+            try:
+               shutil.rmtree(emptydir)
+               print "PRUNED EMPTY DIR: %s" % (emptydir)
+            except:
+               print >>sys.stderr, "ERROR: couldn't prune empty directory: %s" % (emptydir)
+               fail = 1
+   return fail
+
+
+def main(local_argv):
+   argsList = ArgParse(local_argv)
+   username = os.environ.get('USER')
+   if (not username):
+      print "ERROR: $USER not set in env\n"
+      return 8
+
+   #Remove any old filelists
+   OUTFILE = "/user/%s/p4clean-filelist.f" % username
+   if (os.path.isfile(OUTFILE)):
+      os.remove(OUTFILE)
+
+   #Get all subdir files into a local array
+   allfiles = []
+   for path,subdirs,files in os.walk(r'./',topdown=True):
+      for filename in files:
+         f = os.path.join(path, filename)
+         allfiles.append(f)
+
+   #Use Perforce command line to test if files are known by the version control system
+   nonp4files = []
+   print "**********************************************"
+   print "THE FOLLOWING FILES ARE NOT IN PERFORCE:"
+   for file in allfiles:
+      cmd = ["p4","fstat",file]
+      try:
+         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+         p4err = p.communicate()[1]
+         p.wait()
+         if (p.returncode):
+            print >>sys.stderr, "Perforce command 'p4 fstat %s' returned an error" % file
+            print >>sys.stderr, "Check you are logged into Perforce (p4 login) or in a workspace dir"
+            print >>sys.stderr, "Error code: %s" % p.returncode
+            return p.returncode
+         if (p4err):
+            nonp4 = re.sub(r'(.*) -.*$',r'\1',str(p4err).rstrip('\r\n'))
+            print nonp4
+            nonp4files.append(nonp4)
+      except OSError as e:
+         print >>sys.stderr, "System Command execution failed:", e
+         return e.errno
+
+
+
+   # Either Remove Files or Write List to logfile in home dir
+   # depending on command-line args
+   print "\n**********************************************\n"
+   if (not len(nonp4files)):
+      print "No files found outside perfoce in this tree\n"
+      status = prune_empty_dirs()
+      return status
+   elif (argsList.force):
+      print "Auto-deleting all non-perfoce files...\n"
+      try:
+         for f in nonp4files:
+            os.remove(f)
+      except OSError as e:
+         print >>sys.stderr, "System Error:", e
+         return e.errno
+      print "All non-perfoce files have been removed"
+      print "Deleted filenames are recorded in %s\n" % OUTFILE
+      status = prune_empty_dirs()
+      return status
+   else:
+      print "Writing non-perfoce files to %s" % OUTFILE
+      try:
+         with open(OUTFILE,"w") as a:
+            for f in nonp4files:
+               a.write(f + "\n")
+      except IOError as e:
+         print "File error:", e
+         return e.errno
+      print "\nIf files are to be deleted, edit %s to remove any files you want to keep" % OUTFILE
+      print "Then on the command line type:\n"
+      print "  > xargs rm < %s\n" % OUTFILE
+      print "to delete the non-perforce files\n"
+      print "Alternatively - to delete all files re-run this command with -force arg\n"
+   return 0
+
+
+if __name__ == '__main__':
+   status = main(sys.argv[1:])
+   sys.exit(status)

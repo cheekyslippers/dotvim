@@ -1,0 +1,20 @@
+#!/usr/local/bin/perl
+# Generate CTAGS files for VIM in a ROGUE checkout
+
+
+
+chdir $ENV{ROGUEROOT};
+
+
+
+
+my $cmd = "ctags"
+$cmd += "-L ctagssrc"                  # CTAGS source list is in this file
+$cmd += "--if0=no"                     # Don't parse C-code inside an #if 0 statement
+$cmd += "--recurse=yes"                # Recurse into directories specified on command line
+$cmd += "--exclude=\"INCA_libs*\""     # Excludes
+$cmd += "--exclude=\"pvrlib*\""        # Excludes
+$cmd += "--exclude=\"*.log\""          # Excludes
+$cmd += "--exclude=\"*_log\""          # Excludes
+
+
