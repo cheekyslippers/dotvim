@@ -1,0 +1,44 @@
+%YAML 1.2
+---
+name: log
+file_extensions: [log]
+scope: text.log
+
+contexts:
+  main:
+    - match: (error|Error|ERROR)
+      scope: invalid.illegal.log
+
+    - match: (fail|Fail|FAIL)
+      scope: invalid.illegal.log
+
+    - match: \*E,.*$
+      scope: invalid.illegal.log
+
+    - match: \*F,.*$
+      scope: invalid.illegal.log
+
+    - match: UVM_ERROR.*$
+      scope: invalid.illegal.log
+
+    - match: UVM_FATAL.*$
+      scope: invalid.illegal.log
+
+    - match: ASSERT.*ERROR.*$
+      scope: invalid.illegal.log
+
+
+    - match: (warn|Warn|WARN)
+      scope: invalid.illegal.log
+
+    - match: \*W,.*$
+      scope: keyword.control.log
+
+    - match: UVM_WARNING.*$
+      scope: keyword.control.log
+
+
+
+
+    - match: UVM_INFO.*$
+      scope: constant.numeric.log

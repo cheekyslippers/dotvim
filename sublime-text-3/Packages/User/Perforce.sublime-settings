@@ -1,0 +1,6 @@
+{
+   "perforce_auto_add": false, // when true, any file within the client spec that doesn't exist during the presave will be added
+   "perforce_p4path": "/vl/edatools/bin/",      // optional path for p4 if symlink not available (e.g. OSX El Capitan cannot write to /usr/bin/).
+   "perforce_default_graphical_diff_command": "/user/plt/sublime_text_3/sublime_text -n --wait \"%depotfile_path\" \"%file_path\" --command \"sublimerge_diff_views {\\\"left_read_only\\\": true}\"", // used only if Select Graphical Diff Application is not called
+//   "perforce_default_graphical_diff_command": "/vl/edatools/eda/bin/wrappers/p4merge -dw \"%depotfile_path\" \"%file_path\""
+}

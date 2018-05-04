@@ -1,0 +1,213 @@
+###################################################
+#CSH VERSION
+###################################################
+
+
+###################################################
+#ENV variables
+###################################################
+setenv EDITOR /user/plt/sublime_text_3/sublime_text
+setenv VISUAL /user/plt/sublime_text_3/sublime_text
+setenv CVSEDITOR '/user/plt/sublime_text_3/sublime_text -n -w'
+setenv PYTHONPATH ~/python
+setenv LPDEST lp
+setenv PERLDB_OPTS 'NonStop=1 frame=0'
+setenv TZ /usr/share/zoneinfo/Europe/London                             #Set timezone for this shell
+setenv KEW_PRESERVE_ENVIRONMENT 1
+setenv HOST `uname -n`
+unsetenv DESKTOP_STARTUP_ID                                             #If set after startup, this prevents focus passing to a new vim window
+
+
+
+###################################################
+# PuTTY setup
+###################################################
+#Display setting for using Putty with GoGlobal window open
+#Will work for xterms in GoGlobal too so should be safe - but may not work in VNC. Can find an ENVVAR if needed to bomb it out
+#Need to set before XHOST and XSET commands below
+#if ($HOST == hhgw11) then
+#   setenv DISPLAY $HOST`ps aux | grep "$USER.*xinit.*gowm" | grep -v grep | sed "s/.*\(:[0-9]*\).*/\1/"`
+#endif
+alias xttitle-ewa     'echo -n "\033]0;EWA\007"'
+alias xttitle-series8 'echo -n "\033]0;SERIES8\007"'
+
+
+
+
+
+
+#Setup
+set OSNAME=`uname -s`                                                   # Set OSNAME used later in .mycshrc
+set OSREL=`uname -r`                                                    # Set OS Release used later in .mycshrc
+set filec                                                               # Enable filename completion with the ESC char
+set autolist                                                            # List completion possibilities with an ambiguous completion
+set nobeep                                                              # Attempt to disable terminal beeps
+set history=10000                                                       # Store a larger command history
+set savehist=500                                                        # Save history between logins
+
+
+# Allow other hosts to access if running on Gateway machine
+if ( "$HOST" == "hhgw11") then                                          # hhgw11
+  xhost + >/dev/null                                                    # useful for kew/runregression.pl
+  xset b off                                                            # Continue to attempt to disable terminal beeps
+endif
+
+
+#PATH
+setenv PATH $PATH":/user/plt/bin"                                       # Increment PATH to add ~/bin for local scripts
+setenv PATH $PATH":/user/plt/tools/git_tool/bin"                        # Increment PATH to add GIT bin dir for GIT commands
+setenv PATH $PATH":/user/plt/eclipse/cpp-oxygen/eclipse"                # Increment PATH to add Eclipse installation tool
+
+
+# LS Colours
+setenv CLICOLOR true
+eval `/usr/bin/dircolors ~/.dircolorsrc`
+
+#GIT
+alias git '/user/plt/tools/git_tool/bin/git'
+
+#Perforce
+setenv IMGUSER plt                                                      # Imagination Unix User Acct
+setenv REALUSER plt                                                     # Requested by IMG eda team
+setenv P4PORT p4master.hh.imgtec.org:1666                               # Perforce Server
+setenv P4USER paul.tiernan                                              # Windows/P4 user id
+setenv P4CONFIG .p4rc                                                   # Local config file in workspace top -NOTE $P4CLIENT set in this file
+setenv P4MERGE /vl/edatools/tools/wrappers/p4merge                      # Use Perforce merge tool as it handles 3way merge better than VIM
+setenv QT_GRAPHICSSYSTEM native                                         # Use OpenGL renderer for p4v instead of native X11 renderer, which shoiuld speed up the gui
+#setenv P4EDITOR '/user/plt/sublime_text_3/sublime_text -n -w -s'        # Use Sublime as the default Perforce Editor
+setenv P4EDITOR '/usr/bin/vim'                                           # Use GVIM as the default Perforce Editor
+
+
+#Setup Scripts
+setenv SETUP_ROGUE_SCRIPTS ~/bin/setup_rogue
+
+#Eclipse License
+setenv DVT_LICENSE_FILE FLEXLM
+setenv DVTLMD_LICENSE_FILE 27029@hhflexlm08.hh.imgtec.org
+
+#PROMPT (with GIT)
+set     red="%{\033[1;31m%}"
+set   green="%{\033[0;32m%}"
+set  yellow="%{\033[1;33m%}"
+set    blue="%{\033[1;34m%}"
+set magenta="%{\033[0;35m%}"
+set    cyan="%{\033[0;36m%}"
+set   white="%{\033[0;37m%}"
+set  orange="%{\033[38;5;202m%}"
+set   dblue="%{\033[38;5;18m%}"
+set dpurple="%{\033[38;5;55m%}"
+set end="%{\033[0m%}"
+
+alias p4brprmpt   'if ( $?DESIGNROOT ) echo "{" `echo $DESIGNROOT | sed "s/.*\/\(.*\)\/design/\1/"` "}" '
+alias gcurrbr     'git rev-parse HEAD >& /dev/null ; if ( ! $status ) echo "{" `git rev-parse --symbolic-full-name --abbrev-ref HEAD` "}" '
+alias precmd      'set GBRANCH=`eval gcurrbr`; set P4BRPRMT=`eval p4brprmpt`; set prompt="${cyan}%m:${orange}$P4BRPRMT${cyan}:${green}%~${end}${magenta}$GBRANCH${cyan}>${end} "'
+
+
+###################################################
+#Aliases
+###################################################
+#Directory listings (self explanatory)
+if ( "$OSNAME" == "Linux" ) then
+  alias egrep 'egrep --color=auto'                                                   # Get colours in egrep output
+  alias fgrep 'fgrep --color=auto'                                                   # Get colours in fgrep output
+  alias grep 'grep --color=auto'                                                     # Get colours in grep output
+  alias ltr 'ls -ltrLh --color=tty'                                                  # Reverse time full listing + colours + human readable size
+  alias ltra 'ls -ltraLh --color=tty'                                                # Reverse time full listing + hidden files + colours + human readable size
+  alias ll 'ls -lh --color=tty'                                                      # Full listing + colours + human readable size
+  alias la 'ls -laLh --color=tty'                                                    # Full listing + hidden files + colours + human readable size
+  alias lm 'ls -laLh\!* --color=tty | more'                                          # Reverse time directory list only (full) + colours + human readable size
+  alias ld 'ls -ltrLh --color=tty | grep ^d'                                         # Reverse time directory list only + hidden dirs + colours + human readable size
+  alias lda 'ls -ltraLh --color=tty | grep ^d'                                       # Add colours to nomal ls command
+  alias ls 'ls -h --color=tty'                                                       # Full listing + hidden files + colours + piped through more
+else
+  alias ltr 'ls -ltrLh'                                                              # See above for Linux equivalent expectation
+  alias ltra 'ls -ltraLh'
+  alias ll 'ls -lh'
+  alias la 'ls -laLh'
+  alias lm 'ls -laLh\!* | more'
+  alias ld 'ls -ltrLh | grep ^d'
+  alias lda 'ls -ltraLh | grep ^d'
+endif
+
+
+# shortcuts
+alias hf 'eval "history | grep ${1}"'                                   # grep history shortcut
+alias h 'history'                                                       # shortcut for history
+alias m 'more'                                                          # more (useful for pipes)
+alias l 'less'                                                          # less (useful for pipes)
+alias p 'enscript'                                                      # Not sure if this works in imgtec
+alias tmux '/vl/edatools/intern/tmux/tmux-2.0/bin/tmux -u -2'           # Allow utf-8 encoding for split windows, and ensure 256-color terminals are understood
+alias top 'top -b -n 1 | grep ${USER}'                                  # Re-direct TOP for me only, single frame capture in batch mode
+
+# editor
+alias v '/usr/bin/vim'                                                                        # Ensure term config is what I want
+alias g '/usr/bin/gvim -fg white -bg #696969'                                                   # Ensure term config is what I want
+alias gvim '/usr/bin/gvim -fg white -bg #696969'                                                # long case with term config
+alias vim '/usr/bin/vim'                                                                      # long case with term config
+alias vi '/usr/bin/vim'                                                                       # long case with term config
+alias gvimdiff '/usr/bin/gvimdiff -fg white -bg black -geometry 200x30+0+380'                 # long case with term config
+
+# XVNC SERVER
+alias vncserver "vncserver -alwaysshared -geometry 3800x1160 -depth 24"         # Ensure suitable args for a new VNC session
+alias vncserv_laptop "vncserver -alwaysshared -geometry 1900x1040 -depth 24"    # Ensure suitable args for a new VNC session
+
+#Perforce
+alias p4chs 'p4 changes -t -m 50 \!* | ~/bin/perf-changes-colours.py'                                                  # Use local colours script for p4 changes
+alias p4diff 'p4 diff \!* | ~/bin/perf-diff-colours'                                                                   # Use local colours script for p4 diff
+alias p4diff2 'p4 diff2 \!* | ~/bin/perf-diff-colours'                                                                 # Use local colours script for p4 diff
+alias p4sync 'p4 sync \!* | ~/bin/perf-sync-colours'                                                                   # Use local colours script for p4 sync
+alias p4chs-mypend 'p4 changes -t -m50 -s pending -u paul.tiernan \!* | ~/bin/perf-changes-colours.py'                 # Use local colours script for p4 changes
+alias p4chs-mysubmit 'p4 changes -t -m50 -s submitted -u paul.tiernan \!* | ~/bin/perf-changes-colours.py'             # Use local colours script for p4 changes
+alias p4desc 'p4 describe -s \!* | ~/bin/perf-describe-colours.py'                                                     # Use local colours script for p4 describe
+alias p4desc-diff 'p4 describe \!* | ~/bin/perf-describe-colours.py'                                                   # Use local colours script for p4 describe
+alias p4desc-shlv 'p4 describe -S -s \!* | ~/bin/perf-describe-colours.py'                                             # Use local colours script for p4 describe shelved files
+alias p4desc-shlv-diff 'p4 describe -S \!* | ~/bin/perf-describe-colours.py'                                           # Use local colours script for p4 describe shelved files plus differences
+alias p4op 'p4 opened \!* | ~/bin/perf-opened-colours.py'                                                              # Use local colours script for p4 describe
+alias p4login 'p4 login -a \!*'                                                                                        # Apply login ticket to ALL hosts (including GRID machines) so avoids annoying login requests on build
+
+#Kew (using LSF commands)
+alias bjobs    'jstatus -de'                                               # bjobs conversion from UGE
+alias bkill    'jdel -j'                                                   # bkill conversion from UGE
+alias bstat    'jstatus -de'                                               # bstat lists available hosts on UGE
+alias bsub     'jsub --project PVR_HW_GFX__SERIES8_HIGH --use_local_env --wait_until_finish --clean_output --queue interactive --cmd' # submit a farm job
+alias xlsbatch 'sgeacctgui'                                                # farm status gui - (hard to use and slow)
+alias bmem     'jstatus -j \!* --accounting_output'                        # Show memory usage for a job-id after the job has finished
+alias bjstat   'jstatus -j \!* --grid_output'                              # For a given Job ID - show full GRID output
+
+#Setup Scripts
+alias dutton            'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh dutton 05 MAIN'
+alias buckle            'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh buckle 05 MAIN'
+alias fuji              'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh fuji 05 MAIN'
+alias bratan            'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh bratan 01 MAIN'
+alias ewa               'source $SETUP_ROGUE_SCRIPTS/setup_rogue_eclipse.csh buckle 05 MAIN'
+alias sbl               'source $SETUP_ROGUE_SCRIPTS/setup_rogue_sublime.csh buckle 05'
+
+#Some project env vars that might be useful in copy etc
+setenv CO_EWA          /user/plt/projects/ecl/MAIN
+setenv INFRATOOLS      /user/plt/projects/infra/flow/common/tools
+setenv INFRAFLOW       /user/plt/projects/infra/flow
+
+#Eclipse
+alias ecl 'source ~/bin/eclsetup && eclipse &'
+
+#SublimeText
+unsetenv LC_ALL
+setenv LANG en_US.UTF-8
+setenv LC_CTYPE en_US.UTF-8
+alias st '/user/plt/sublime_text_3/sublime_text -n'
+alias sdiff '/user/plt/sublime_text_3/sublime_text -n --wait --command "sublimerge_diff_views"'
+
+
+
+#Jedit
+alias jedit /vl/edatools/intern/jedit/5.1.0/bin/jedit
+
+# CSIM Logging
+#setenv UVMC_LOGGING_MODE 'RECORD'
+#setenv RGX_UVM_LOG 1
+
+# DEBUG message in Volcanic Flow
+setenv DEBUG 1
+
+# VERDI BUG IN SYNOPSYS
+setenv FSDB_SC_VALPTR_PROTECT 1

@@ -1,0 +1,23 @@
+{
+
+
+    //Defines how to deal with whitespace differences. Array consisting of the following:
+    //"begin" - ignore at line begin, "middle" - ignore in the middle, "end" - ignore at line end
+    "ignore_whitespace": [],
+
+    //Defines how often panels in diff window are synced (milliseconds). Minimum value is 1.
+    //Although "1" is proved to be safe value, you should change it when Sublime Text reaches
+    //high CPU usage or crashes when diff window is open.
+    "scroll_sync_interval": 100,
+
+    //Defines the order in which version control systems should be discovered for VCS-related commands.
+    //This is helpful when your project is versioned under multiple VCS setup. Set your primary on the
+    //first position so that it will be always used no matter if another one is found.
+    "vcs_discovery_order": ["/vl/edatools/bin/p4"],
+
+
+    //By default, in three-way diff view, navigation is limited to conflicts only. When set to true, you
+    //can navigate through all changes. You can change this setting via context menu too.
+    "three_way_navigate_all": false
+}
+

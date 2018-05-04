@@ -1,0 +1,22 @@
+{
+	"auto_complete_commit_on_tab": true,
+	"color_scheme": "Packages/Materialize/schemes/Material Flatland.tmTheme",
+	"detect_indentation": false,
+	"dictionary": "Packages/Language - English/en_GB.dic",
+	"font_size": 8,
+	"highlight_modified_tabs": true,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"indent_guide_options":
+	[
+		"draw_normal",
+		"draw_active"
+	],
+	"tab_size": 3,
+	"theme": "Cobalt2.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true,
+	"use_tab_stops": false
+}

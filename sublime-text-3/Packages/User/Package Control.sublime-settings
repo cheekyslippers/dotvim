@@ -1,0 +1,29 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"A File Icon",
+		"BracketHighlighter",
+		"Coffee Color Scheme",
+		"Highlight",
+		"Material Color Scheme",
+		"Material Theme",
+		"Materialize",
+		"Origami",
+		"OrigamiEmacs",
+		"Package Control",
+		"Perforce",
+		"SublimeLinter",
+		"SublimeLinter-pylint",
+		"Sublimerge 3",
+		"SystemVerilog",
+		"Tcsh and Csh Mode",
+		"Theme - Autumn",
+		"Theme - Cobalt2",
+		"Theme - Sodarized",
+		"VHDL"
+	]
+}
