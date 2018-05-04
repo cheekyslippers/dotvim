@@ -1,7 +1,7 @@
 " Vim syntax file
-" Language:      LOG files
+" Language:      WAIVER files
 " Maintainer:    Paul Tiernan
-" Date Created:  24th April 2006
+" Date Created:  24th April 2018
 "
 " Highlights Errors and Warnings in LOG files
 

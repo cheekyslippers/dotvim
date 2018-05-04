@@ -25,6 +25,7 @@ augroup filetypedetect
   au! BufRead,BufNewFile *.vsof         setfiletype ntf
   au! BufRead,BufNewFile *.f            setfiletype tcl
   au! BufRead,BufNewFile *.ecom         setfiletype specman
+  au! BufRead,BufNewFile *.waiver       setfiletype waiverfile
 augroup END
 
 augroup filetypedetect
