@@ -1,0 +1,33 @@
+FIFO Specification
+==================
+
+
+
+               --------
+          8   |        |   8
+in     ---/-->|   F    |---/--->  out
+              |   I    |
+clk_in ------>|   F    |<-------  clk_out
+              |   O    |
+full   <------|        |------->  empty
+              |        |
+               --------
+                  ^
+reset  -----------'
+
+
+
+1. FIFO is 8 bits wide
+2. FIFO is 16 fields deep
+3. Reset is asynchronous and resets the entire FIFO
+4. All data is sampled on rising clock edge
+5. full is synchronous to clk_in, empty is synchronous to clk_out
+6. full is asserted instantanesouly on all 16 fields being utilised
+7. full is de-asserted with at least 1 field free
+8. empty is de-asserted with at least 1 field entry present in the FIFO
+9. empty is asserted instaneously when no entries are present in the FIFO
+
+
+
+Given the above specficiation - how would you verify this FIFO?
+

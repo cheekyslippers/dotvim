@@ -1,0 +1,43 @@
+Scripting Interview Questions
+==============================
+
+Please answer the following questions to the best of your ability
+
+PERL
+----
+1. What is meant by the following designators?
+
+  a) $
+  b) @
+  c) %
+
+
+2. What will the following code print?
+
+  my $str = "Imagination Technologies";
+  $str =~ s/ation/ing/;
+  $str =~ s/(.*)\s+.*/\1 The World\n";
+  print $str;
+
+
+3. How would you make a PERL script executable?
+
+
+
+PYTHON
+------
+
+1. How would you send the string "ERROR: it doesn't work" to stderr?
+
+
+2. For the given array inputtextfiles[] how would you:
+
+  a) check if it is empty?
+  b) If it has contents - print out the element of each array
+
+
+
+3. Considering each element of the array in 2 is a file, how would you open
+   each file to read the contents?
+
+

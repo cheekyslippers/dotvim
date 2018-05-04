@@ -1,0 +1,43 @@
+C Language Interview Questions
+==============================
+
+Please answer the following questions to the best of your ability
+
+
+1. Given the following:
+        printf("%d",sizeof(int));      ->  32
+
+   What does the following line print?
+        printf("0x%x",-1 << 2);
+
+   ANS:  0xfffffffc
+
+
+2. In C-language, What are the values of "y" and "x" after the calcualtions?
+   Given  x = 5  and  y = 6   as initial conditions for each question:
+  a)  y = x++;
+  b)  y += x - 1;
+
+    ANS:  a)  y = 5;  x = 6
+          b)  y = 10; x = 5
+
+
+3. What are the values of "z" and "n" after each of the following code lines?
+   Given x = 5, y = 6 and n = 10 at the start of each calculation:
+  a)  z = (x >= ++y) && n++;
+  b)  z = (x == --y) && (n < 20);
+  c)  z = (x < y) || --n;
+
+    ANS: a)  z = FALSE;   n = 10 (why is n not 11? It doesn't get calculated)
+         b)  z = TRUE;    n = 10
+         c)  z = TRUE;    n = 9
+
+
+4. What is wrong with the following code:
+   int *a;
+   *a = 60;
+
+    ANS: pointer needs new();
+
+
+

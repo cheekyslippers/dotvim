@@ -1,0 +1,195 @@
+IMAGINATION TECHNOLOGIES
+------------------------
+
+Verification Questions For Graduates
+====================================
+
+YOUR NAME:
+
+UNIVERSITY:
+
+DATE:
+
+
+Please answer the following questions to the best of your ability
+
+General Verification
+--------------------
+
+1. In the semiconductor industry what is generally understood to be the difference
+   between Verification and Test (eg DFT / ATE)
+
+
+
+
+2. List some of the major components typically found in a verification testbench?
+
+
+
+
+
+3. What measures are commonly used to determine the quality of an RTL design
+   before synthesis?
+
+
+
+
+
+4. Explain your understanding of the following terms:
+  - Coverage
+
+  - Constrained Random Testing
+
+  - Regression
+
+  - Soak Testing
+
+
+
+5. Given the following RTL block to be tested, draw the verification components
+   you would expect to create to verify the functionality
+
+
+
+
+
+                              ------------
+                             |            |
+                   sig_in    |            |   sig_out
+                         ----|   D U T    |----
+                     clk     |            |
+                         ----|            |
+                             |            |
+                              ------------
+
+
+
+
+
+
+
+
+Language Questions
+==================
+
+Linux/Unix Shell
+----------------
+6. What linux command would you use to search for the word "ERROR" in the
+   text file "my_output.txt"?
+
+
+
+7. What linux command would you use to find "myfile.txt" in the current
+   directory or any sub-directory below the current directory?
+
+
+
+8. In a typical c-shell, how would you set an environment variable called USER
+   to your home directory?
+
+
+
+
+
+GENERIC OBJECT-ORIENTATED CODING:
+---------------------------------
+9. List 3 benefits of object-orientated coding.
+
+
+
+
+10. The following terms are common to many object-orientated languages. What is your 
+    understanding of their meaning?
+
+  a) Inheritance
+  b) Polymorphism
+  c) Constructor and Deconstructor
+
+
+
+
+
+C-LANGUAGE
+----------
+11. In C-language, given that:
+        printf("%d",sizeof(int));
+
+    prints 32, what does the next line print?
+        printf("0x%x",-1 << 2);
+
+
+12. In C-language, What are the values of "y" and "x" after the calcualtions?
+    Given  x = 5  and  y = 6   as initial conditions for each question:
+  a)  y = x++;
+  b)  y += x - 1;
+
+
+
+13. What is wrong with the following code:
+   int *a;
+   *a = 60;
+
+
+
+PERL
+----
+14. What is meant by the following designators?
+
+  a) $
+  b) @
+  c) %
+
+
+15. What will the following code print?
+
+  my $str = "Imagination Technologies";
+  $str =~ s/ation/ing/;
+  $str =~ s/(.*)\s+.*/\1 The World\n";
+  print $str;
+
+
+
+UVM
+---
+
+16. What code would register the following class with the UVM factory?
+
+     class  my_driver extends uvm_driver(#my_transaction);
+        logic  signal_a;
+        logic  signal_b;
+        logic  signal_c;
+
+
+
+        ....
+     endclass;
+
+
+   and why does this class need to be registered?
+
+
+17. What are the different levels of UVM message severity and what is
+    their purpose?
+
+
+
+
+18. What is the difference between a System Verilog task and a 
+    System Verilog function?
+
+
+
+19. Write a pure virtual function declaration called "calc_depth" that
+    returns an integer, given 2 integer inputs, to be included in the
+    class of question (1) above
+
+
+
+
+20. Write the definition of the virtual function in a child class called
+    driver_1 that returns the multiple of the two input integers.
+
+
+
+
+

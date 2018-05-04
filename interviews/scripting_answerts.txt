@@ -1,0 +1,70 @@
+Scripting Interview Questions
+==============================
+
+Please answer the following questions to the best of your ability
+
+PERL
+----
+1. What is meant by the following designators?
+
+  a) $      : ANS   scalar variable
+  b) @      : ANS   array
+  c) %      : ANS   hash table (key/value pair)
+
+
+2. What will the following code print?
+
+  my $str = "Imagination Technologies";
+  $str =~ s/ation/ing/;
+  $str =~ s/(.*)\s+.*/\1 The World\n";
+  print $str;
+
+ANS:  Imagining The World
+
+
+3. How would you make a PERL script executable?
+
+ANS:
+  chmod +x <scriptname>   OR   chmod 777 <scriptname>
+  Then at the top of the file:
+     #!/usr/bin/perl
+
+
+PYTHON
+------
+
+1. How would you send the string "ERROR: it doesn't work" to stderr?
+
+ANS:
+    import sys
+    print >>sys.stderr, "ERROR: it doesn't work"
+
+2. For the given array inputtextfiles[] how would you:
+
+  a) check if it is empty?
+  b) If it has contents - print out the element of each array
+
+ANS:
+  if (not len(inputtestfiles)):
+     print "No files in array"
+  else:
+     for f in inputtestfiles:
+        print "FILENAME: %s" % f
+
+
+3. Considering each element of the array in 2 is a file, how would you open
+   each file to read the contents?
+
+
+  if (not len(inputtestfiles)):
+     print "No files in array"
+  else:
+     for f in inputtestfiles:
+        print "FILENAME: %s" % f
+        try:
+           FILERD = open(f, "r")
+        except IOError as e:
+           print "ERROR: file error:", e
+           return e.errno
+
+

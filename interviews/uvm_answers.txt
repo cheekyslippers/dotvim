@@ -1,0 +1,203 @@
+UVM Language Interview Answers
+=================================
+
+Please answer the following questions to the best of your ability
+
+1.  What is wrong with the following UVM test code?
+
+  my_seq_item     item_a;
+
+  item_a.field_1 = 10;
+  item_a.field_2 = 20;
+  item_a.field_3 = 30;
+
+  item_a.do_print();
+
+  ANS: need to new() the seq item
+
+
+2.  What code would register the following class with the UVM factory?
+
+   class  my_driver extends uvm_driver(#my_transaction);
+      logic  signal_a;
+      logic  signal_b;
+      logic  signal_c;
+      bit    clk;
+      bit    resetn;
+
+
+      ....
+   endclass;
+
+   ANS:        `uvm_component_utils(my_driver)
+         OR    `uvm_component_utils_begin(my_driver) [for a seq item]
+                  `uvm_field_int (....,UVM_ALL_ON)
+               `uvm_component_utils_end
+         DISCUSS benefits of UVM factory??
+   
+
+3.  Complete the driver class in (2) with the transaction from (1) assuming:
+   - signal_a = field_1 + field_2
+   - signal_b = field_2
+   - if field_2 is larger than 25 then signal_c = field_3 otherwise signal_c = field_1
+
+   ANS:
+   class  my_driver extends uvm_driver(#my_seq_item);
+      logic  signal_a;
+      logic  signal_b;
+      logic  signal_c;
+      bit    clk;
+      bit    resetn;
+
+      `uvm_component_utils(my_driver)
+
+      function new(string name, uvm_component parent);
+         super.new(name, parent);
+      endfunction
+      
+      virtual task run_phase(uvm_phase phase);
+        fork
+          reset_task();
+          get_and_drive();
+        join
+      endtask;
+
+      task reset_task();
+         <reset driver signals>
+      endtask;
+
+      task get_and_drive();
+         @(posedge resetn);
+         forever begin
+            seq_item_port.get_next_item(req);
+            $cast(rsp, req.clone());
+            rsp.set_id_info(req);
+            `uvm_info(get_type_name(), print "Driving transaction...",UVM_HIGH)
+            @(posedge clk);
+            signal_a = rsp.field_1 + rsp.field_2;
+            signal_b = rsp.field_2;
+            signal_c = (rsp.field_2 > 25) ? rsp.field_3 : rsp.field_1;
+            `uvm_info(get_type_name(), print "Finished driving transaction...",UVM_HIGH)
+            seq_item_port.item_done(rsp);
+         end
+      endtask;
+   endclass;
+
+   - Ask about valid / enable triggers and how they might be used
+   - Ask about UVM message severity (or see later question)
+   - Ask about cloning to rsp and give an example of why this might be done
+
+
+
+4.  What is the most accepted method of connecting the Driver signals to the
+DUT? Write how you would do this.
+
+  ANS:
+   interface my_if (input bit clk, resetn);
+     logic signal_a;
+     logic signal_b;
+     logic signal_c;
+   endinterface;
+
+   DRIVER:
+   virtual my_if  dut_if;
+
+   then replace signals with dut_if.signal_a etc
+
+
+5.  Write a UVM Sequence Item called my_seq_item that could be used for my_transaction with:
+     field_1  :  valid ranges from 0 to 100
+     field_2  :  valid ranges 10 to 50 inclusive in steps of 10
+     field_3  :  the result of field_1 + field_2
+
+   ANS:
+   class my_seq_item extends uvm_sequence_item;
+   
+      function new (string name);
+         super.new(name);
+      endfunction
+
+      rand logic field_1;
+      rand logic field_2;
+      rand logic field_3;
+
+      constraint c_field_1 { field_1 inside { [0:100] } }
+      constraint c_field_2 { field_2 inside { 10, 20, 30, 40, 50} }
+
+      function void post_randomize();
+         field_3 = field_1 + field_2;
+      endfunction
+   endclass
+
+
+6.  Given the following sequencer, complete the UVM agent for the given components:
+
+   class my_sequencer extends uvm_sequencer #(my_seq_item);
+      <uvm_registration_code>
+      <constructor>
+   endclass;
+
+ANS:
+   class my_agent extends uvm_agent;
+      my_driver      drv1;
+      my_sequencer   seq1;
+
+      `uvm_component_utils_begin(my_agent)
+        `uvm_field_enum(uvm_active_passive_enum, my_agent_is_active_e, UVM_ALL_ON)
+      `uvm_component_utils_end
+
+      function new (string name, uvm_component parent);
+         super.new(name, parent);
+      endfunction
+
+      function void build_phase(uvm_phase phase);
+         super.build_phase(phase);
+         if (my_agent_is_active_e == UVM_ACTIVE) begin
+           seq1 = my_sequencer::type_id::create("seq1", this);
+           drv1 = my_driver::type_id::create("drv1", this);
+         end
+      endfunction
+
+      function void connect_phase(uvm_phase phase);
+         if (my_agent_is_active_e == UVM_ACTIVE) begin
+           drv1.seq_item_port.connect(seq1.seq_item_export);
+         end
+      endfunction
+
+   endclass;
+
+
+7.  What other components might typically be added to this agent?
+
+   ANS:  MONITOR / SCOREBOARD
+
+
+8.  What are the different levels of UVM message severity and what is
+    their purpose?
+
+   ANS:  UVM_NONE; UVM_LOW; UVM_MEDIUM; UVM_HIGH; UVM_FULL; UVM_DEBUG
+            To allow increasingly verbose logfile output
+
+
+
+9.  What is the difference between a System Verilog task and a
+    System Verilog function?
+
+   ANS: tasks can consume simulation time, functions cannot
+
+
+
+10.  Write a pure virtual function declaration called "calc_depth" that
+     returns an integer, given 2 integer inputs, to be included in the
+     driver of question (2) above
+
+   ANS:
+    pure virtual function integer calc_depth(int a, int b);
+
+
+11.  What is the UVM config database and how might it be useful?
+    ANS:
+      an allocated shared memory area visible to the static and dynamic
+      domains of the TB. Useful for storing virtual interfaces to be
+      passed to the DUT, and common functions for more than one object.
+      Similar to "statc" keyword in C++.

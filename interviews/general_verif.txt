@@ -1,0 +1,79 @@
+IMAGINATION TECHNOLOGIES
+------------------------
+
+CANDIDATE NAME:
+
+DATE:
+
+
+General Verification Questions
+==============================
+(for interviewer to ask and take notes)
+
+
+1. What measures are commonly used to determine the quality of an RTL design
+   before synthesis?
+
+
+
+
+2. What are the benefits of UVM over SystemC, Specman E, OVM, VMM ?
+  - advantages?
+
+  - disadvantages?
+
+
+
+
+3. Explain your understanding of the following terms:
+
+  - Coverage
+
+
+  - Constrained Random Testing
+
+
+  - Regression
+
+
+  - Soak Testing
+
+
+
+4. The following terms are common to many object-orientated languages. What is your
+   understanding of their meaning?
+
+
+  a) Constructor and Deconstructor
+
+  b) Inheritance
+
+  c) Polymorphism
+
+
+
+
+
+5. What scripting languages are you comfortable with?
+
+
+  - Ask about arrays / hash keys / makefiles / cron
+  - Show scripting questions ?
+
+
+
+6. If C / C++ is on CV then ask C questions
+
+
+7. If UVM is on CV then ask UVM questions
+
+
+8. Go through FIFO verification techniques
+
+
+9. Any follow up questions from candidate
+
+
+
+
+
