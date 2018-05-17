@@ -179,8 +179,9 @@ alias dutton            'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh dut
 alias buckle            'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh buckle 05 MAIN'
 alias fuji              'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh fuji 05 MAIN'
 alias bratan            'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh bratan 01 MAIN'
-alias ewa               'source $SETUP_ROGUE_SCRIPTS/setup_rogue_eclipse.csh buckle 05 MAIN'
+alias ewa               'source $SETUP_ROGUE_SCRIPTS/setup_rogue_eclipse.csh bratan 01 MAIN'
 alias sbl               'source $SETUP_ROGUE_SCRIPTS/setup_rogue_sublime.csh buckle 05'
+alias infra             'source $SETUP_ROGUE_SCRIPTS/setup_rogue_infra.csh bratan 01 MAIN'
 
 #Some project env vars that might be useful in copy etc
 setenv CO_EWA          /user/plt/projects/ecl/MAIN
