@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/user/plt/projects/series8'
-let g:netrw_dirhist_2='/user/plt/projects/series8/MAIN'
-let g:netrw_dirhist_3='/user/plt/projects/series8/MAIN/docs'
-let g:netrw_dirhist_4='/user/plt/projects/series8/MAIN/docs/common'
-let g:netrw_dirhist_5='/user/plt.tmp2/projects/ecl/MAIN/verif/gen_BUCKLE_CONFIG04_VERDI_sim_rgx_tpu_rgx_tf_tb_tf_uvm_tb/sim/rgx_tpu/rgx_tf_tb/tf_uvm_tb/regression_180223.172812/merged_vcs/coverage.merged.report'
-let g:netrw_dirhist_6='/user/plt/projects/series8/MAIN/verif/common/lib/img_gfx_bus_stim'
