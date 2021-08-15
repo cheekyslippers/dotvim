@@ -1,7 +1,7 @@
 "Gui options that override the standard .vimrc options set for non-gui
 "application
 "
-"Paul Tiernan @ Broadcom 2006
+"Paul Tiernan @ 2006
 
 "Set font to use (some commented if want to use for a change)
 "Can type xfontsel from xterm to try out different fonts

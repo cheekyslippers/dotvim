@@ -6,14 +6,13 @@
 ###################################################
 #ENV variables
 ###################################################
-setenv EDITOR /user/plt/sublime_text_3/sublime_text
-setenv VISUAL /user/plt/sublime_text_3/sublime_text
-setenv CVSEDITOR '/user/plt/sublime_text_3/sublime_text -n -w'
+setenv EDITOR /usr/local/bin/code
+setenv VISUAL /usr/local/bin/code
+setenv CVSEDITOR '/usr/local/bin/code -n -w'
 setenv PYTHONPATH ~/python
 setenv LPDEST lp
 setenv PERLDB_OPTS 'NonStop=1 frame=0'
-setenv TZ /usr/share/zoneinfo/Europe/London                             #Set timezone for this shell
-setenv KEW_PRESERVE_ENVIRONMENT 1
+setenv TZ /usr/share/zoneinfo/Australia/Perth                           #Set timezone for this shell
 setenv HOST `uname -n`
 unsetenv DESKTOP_STARTUP_ID                                             #If set after startup, this prevents focus passing to a new vim window
 
@@ -28,12 +27,6 @@ unsetenv DESKTOP_STARTUP_ID                                             #If set 
 #if ($HOST == hhgw11) then
 #   setenv DISPLAY $HOST`ps aux | grep "$USER.*xinit.*gowm" | grep -v grep | sed "s/.*\(:[0-9]*\).*/\1/"`
 #endif
-alias xttitle-ewa     'echo -n "\033]0;EWA\007"'
-alias xttitle-series8 'echo -n "\033]0;SERIES8\007"'
-
-
-
-
 
 
 #Setup
@@ -47,43 +40,26 @@ set savehist=500                                                        # Save h
 
 
 # Allow other hosts to access if running on Gateway machine
-if ( "$HOST" == "hhgw11") then                                          # hhgw11
-  xhost + >/dev/null                                                    # useful for kew/runregression.pl
-  xset b off                                                            # Continue to attempt to disable terminal beeps
-endif
+xhost + >/dev/null                                                    # useful for kew/runregression.pl
+xset b off                                                            # Continue to attempt to disable terminal beeps
 
 
 #PATH
-setenv PATH $PATH":/user/plt/bin"                                       # Increment PATH to add ~/bin for local scripts
-setenv PATH $PATH":/user/plt/tools/git_tool/bin"                        # Increment PATH to add GIT bin dir for GIT commands
-setenv PATH $PATH":/user/plt/eclipse/cpp-oxygen/eclipse"                # Increment PATH to add Eclipse installation tool
+setenv PATH $PATH":/Users/family/bin"                                       # Increment PATH to add ~/bin for local scripts
 
 
 # LS Colours
 setenv CLICOLOR true
 eval `/usr/bin/dircolors ~/.dircolorsrc`
 
-#GIT
-alias git '/user/plt/tools/git_tool/bin/git'
-
 #Perforce
-setenv IMGUSER plt                                                      # Imagination Unix User Acct
-setenv REALUSER plt                                                     # Requested by IMG eda team
-setenv P4PORT p4master.hh.imgtec.org:1666                               # Perforce Server
+setenv P4PORT server                                                    # Perforce Server
 setenv P4USER paul.tiernan                                              # Windows/P4 user id
 setenv P4CONFIG .p4rc                                                   # Local config file in workspace top -NOTE $P4CLIENT set in this file
-setenv P4MERGE /vl/edatools/tools/wrappers/p4merge                      # Use Perforce merge tool as it handles 3way merge better than VIM
+setenv P4MERGE /usr/local/bin/code -n -w                                # Use Perforce merge tool as it handles 3way merge better than VIM
 setenv QT_GRAPHICSSYSTEM native                                         # Use OpenGL renderer for p4v instead of native X11 renderer, which shoiuld speed up the gui
-#setenv P4EDITOR '/user/plt/sublime_text_3/sublime_text -n -w -s'        # Use Sublime as the default Perforce Editor
-setenv P4EDITOR '/usr/bin/vim'                                           # Use GVIM as the default Perforce Editor
+setenv P4EDITOR '/usr/bin/vim'                                          # Use GVIM as the default Perforce Editor
 
-
-#Setup Scripts
-setenv SETUP_ROGUE_SCRIPTS ~/bin/setup_rogue
-
-#Eclipse License
-setenv DVT_LICENSE_FILE FLEXLM
-setenv DVTLMD_LICENSE_FILE 27029@hhflexlm08.hh.imgtec.org
 
 #PROMPT (with GIT)
 set     red="%{\033[1;31m%}"
@@ -98,7 +74,7 @@ set   dblue="%{\033[38;5;18m%}"
 set dpurple="%{\033[38;5;55m%}"
 set end="%{\033[0m%}"
 
-alias p4brprmpt   'if ( $?DESIGNROOT ) echo "{" `echo $DESIGNROOT | sed "s/.*\/\(.*\)\/design/\1/"` "}" '
+alias p4brprmpt   'if ( $?P4ROOT ) echo "{" `echo $P4ROOT | sed "s/.*\/\(.*\)\/design/\1/"` "}" '
 alias gcurrbr     'git rev-parse HEAD >& /dev/null ; if ( ! $status ) echo "{" `git rev-parse --symbolic-full-name --abbrev-ref HEAD` "}" '
 alias precmd      'set GBRANCH=`eval gcurrbr`; set P4BRPRMT=`eval p4brprmpt`; set prompt="${cyan}%m:${orange}$P4BRPRMT${cyan}:${green}%~${end}${magenta}$GBRANCH${cyan}>${end} "'
 
@@ -135,14 +111,14 @@ alias hf 'eval "history | grep ${1}"'                                   # grep h
 alias h 'history'                                                       # shortcut for history
 alias m 'more'                                                          # more (useful for pipes)
 alias l 'less'                                                          # less (useful for pipes)
-alias p 'enscript'                                                      # Not sure if this works in imgtec
-alias tmux '/vl/edatools/intern/tmux/tmux-2.0/bin/tmux -u -2'           # Allow utf-8 encoding for split windows, and ensure 256-color terminals are understood
+alias p 'enscript'                                                      # Not sure if this works in work env
+alias tmux '/usr/local/bin/tmux -u -2'                                  # Allow utf-8 encoding for split windows, and ensure 256-color terminals are understood
 alias top 'top -b -n 1 | grep ${USER}'                                  # Re-direct TOP for me only, single frame capture in batch mode
 
 # editor
 alias v '/usr/bin/vim'                                                                        # Ensure term config is what I want
-alias g '/usr/bin/gvim -fg white -bg #696969'                                                   # Ensure term config is what I want
-alias gvim '/usr/bin/gvim -fg white -bg #696969'                                                # long case with term config
+alias g '/usr/bin/gvim -fg white -bg #696969'                                                 # Ensure term config is what I want
+alias gvim '/usr/bin/gvim -fg white -bg #696969'                                              # long case with term config
 alias vim '/usr/bin/vim'                                                                      # long case with term config
 alias vi '/usr/bin/vim'                                                                       # long case with term config
 alias gvimdiff '/usr/bin/gvimdiff -fg white -bg black -geometry 200x30+0+380'                 # long case with term config
@@ -164,51 +140,3 @@ alias p4desc-shlv 'p4 describe -S -s \!* | ~/bin/perf-describe-colours.py'      
 alias p4desc-shlv-diff 'p4 describe -S \!* | ~/bin/perf-describe-colours.py'                                           # Use local colours script for p4 describe shelved files plus differences
 alias p4op 'p4 opened \!* | ~/bin/perf-opened-colours.py'                                                              # Use local colours script for p4 describe
 alias p4login 'p4 login -a \!*'                                                                                        # Apply login ticket to ALL hosts (including GRID machines) so avoids annoying login requests on build
-
-#Kew (using LSF commands)
-alias bjobs    'jstatus -de'                                               # bjobs conversion from UGE
-alias bkill    'jdel -j'                                                   # bkill conversion from UGE
-alias bstat    'jstatus -de'                                               # bstat lists available hosts on UGE
-alias bsub     'jsub --project PVR_HW_GFX__SERIES8_HIGH --use_local_env --wait_until_finish --clean_output --queue interactive --cmd' # submit a farm job
-alias xlsbatch 'sgeacctgui'                                                # farm status gui - (hard to use and slow)
-alias bmem     'jstatus -j \!* --accounting_output'                        # Show memory usage for a job-id after the job has finished
-alias bjstat   'jstatus -j \!* --grid_output'                              # For a given Job ID - show full GRID output
-
-#Setup Scripts
-alias dutton            'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh dutton 05 MAIN'
-alias buckle            'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh buckle 05 MAIN'
-alias fuji              'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh fuji 05 MAIN'
-alias bratan            'source $SETUP_ROGUE_SCRIPTS/setup_rogue_series8.csh bratan 01 MAIN'
-alias ewa               'source $SETUP_ROGUE_SCRIPTS/setup_rogue_eclipse.csh bratan 01 MAIN'
-alias sbl               'source $SETUP_ROGUE_SCRIPTS/setup_rogue_sublime.csh buckle 05'
-alias infra             'source $SETUP_ROGUE_SCRIPTS/setup_rogue_infra.csh bratan 01 MAIN'
-
-#Some project env vars that might be useful in copy etc
-setenv CO_EWA          /user/plt/projects/ecl/MAIN
-setenv INFRATOOLS      /user/plt/projects/infra/flow/common/tools
-setenv INFRAFLOW       /user/plt/projects/infra/flow
-
-#Eclipse
-alias ecl 'source ~/bin/eclsetup && eclipse &'
-
-#SublimeText
-unsetenv LC_ALL
-setenv LANG en_US.UTF-8
-setenv LC_CTYPE en_US.UTF-8
-alias st '/user/plt/sublime_text_3/sublime_text -n'
-alias sdiff '/user/plt/sublime_text_3/sublime_text -n --wait --command "sublimerge_diff_views"'
-
-
-
-#Jedit
-alias jedit /vl/edatools/intern/jedit/5.1.0/bin/jedit
-
-# CSIM Logging
-#setenv UVMC_LOGGING_MODE 'RECORD'
-#setenv RGX_UVM_LOG 1
-
-# DEBUG message in Volcanic Flow
-setenv DEBUG 1
-
-# VERDI BUG IN SYNOPSYS
-setenv FSDB_SC_VALPTR_PROTECT 1

@@ -2,7 +2,7 @@
 
 use strict;
 
-my $bashenvfile = "/user/plt/.bashrc_env";
+my $bashenvfile = "/Users/family/.bashrc_env";
 
 open(BASHENV, ">", $bashenvfile) or die "ERROR: couldn't open $bashenvfile for write\n";
 

@@ -1,4 +1,4 @@
-#!/vl/edatools/intern/perl/5.8.8/bin/perl
+#!/usr/bin/perl
 
 
 my @mixed_values = (1, 0, 0);

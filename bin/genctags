@@ -1,9 +1,9 @@
 #!/usr/local/bin/perl
-# Generate CTAGS files for VIM in a ROGUE checkout
+# Generate CTAGS files for VIM in a checkout
 
 
 
-chdir $ENV{ROGUEROOT};
+chdir $ENV{PROJECT};
 
 
 

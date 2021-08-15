@@ -1,7 +1,0 @@
-{
-    /* Pygments theme to use */
-    "theme": "autumn",
-
-    /* Full HTML page to generate? false = just a <div/> */
-    "full": false
-}

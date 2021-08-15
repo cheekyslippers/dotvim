@@ -1,5 +1,6 @@
 #!/usr/bin/env perl
 
+# Paul Tiernan @ 2012
 
 use strict;
 

@@ -6,9 +6,9 @@ import subprocess
 import re
 
 
-def getP4ChangelistNumber():
+def getP4ChangelistNumber(dir):
    p4changenum = 0
-   charg = str(os.environ['ROGUEROOT']) + "/...#have"
+   charg = dir + "/...#have"
    cmd = ["p4","changes","-m1",charg]
    try:
       p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -41,4 +41,4 @@ def getP4ChangelistNumber():
 
 
 if __name__ == '__main__':
-   getP4ChangelistNumber()
+   getP4ChangelistNumber($1)

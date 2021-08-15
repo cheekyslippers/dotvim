@@ -1,8 +1,0 @@
-#!/bin/csh
-
-setenv ECLROOT /user/plt/projects/ecl
-setenv SIMROOT $ECLROOT/sim_volc_main
-
-cd $ECLROOT/MAIN/design
-source setup.csh
-cd $ECLROOT/MAIN

@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+# Paul Tiernan @ 2011
+
 use strict;
 use Getopt::Long;
 
