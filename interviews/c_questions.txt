@@ -19,9 +19,9 @@ Please answer the following questions to the best of your ability
 
 3. What are the values of "n" and "y" after each of the following code lines?
    Given x = 5, y = 6 and n = 10 at the start of each calculation:
-  a)  y = (x >= ++y) && n++;
-  b)  y = (x == --y) && (n < 20);
-  c)  y = (x < y) || --n;
+  a)  q = (x >= ++y) && n++;
+  b)  q = (x == --y) && (n < 20);
+  c)  q = (x < y) || --n;
 
 
 4. What is wrong with the following code:
